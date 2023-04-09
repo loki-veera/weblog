@@ -43,7 +43,7 @@ es_resultant = torch.einsum('ij, iqr -> ijr', A, B)
 print(f'Einsum resultant matrix shape: {es_resultant.shape}')
 ```
 
-As you see, it works without any need for dimensional bumping. For me this is in very handy, when implementing the multihead attention in vanilla transformer as matrices are 4D. Further in this page, lets us go through how to use einsum and few of its applications in linear algebra.
+As you see, it works without any need for dimensional bumping. For me this is very handy, when implementing the multihead attention in vanilla transformer as matrices are 4D. Further in this page, lets us go through how to use einsum and few of its applications in linear algebra.
 
 ## How to use einsum?
 As you see in the above cell, there are two major arguments given to the _torch.einsum_. The second argument is self explanatory as they are the matrices we want to operate on, here by referred as operands as in [1]. The important part of einsum is the first argument which is the equation. The equation is further divided into two parts, first part consisting of the indices of the matrices we are operating on. These are to the left side of the '->' and on the right side, we state the indices we want. Lets see a simple example of matrix transpose.
@@ -161,6 +161,7 @@ print(output.shape)
 ```
 
 In general, one can find lot of implementations of multihead attention using _torch.bmm( )_. Objective here is to show that this can be easily performed using einsum.
+
 ### Exercise:
 Objective: Try to compute gaussian distribution (in both 1D and 2D) using einsum. In depth details of gaussian distribution can be found here in [3]. The below image depicts the guassian distribution formula taken from [3].
 ![Multivariate Gaussian Distribution](./multigauss.jpeg "Multivariate Gaussian Distribution")

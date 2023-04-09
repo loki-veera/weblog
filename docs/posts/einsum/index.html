@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -213,7 +213,7 @@ Resultant matrix shape: torch.Size([3, 4, 9])</code></pre>
 <pre><code>Einsum resultant matrix shape: torch.Size([3, 4, 9])</code></pre>
 </div>
 </div>
-<p>As you see, it works without any need for dimensional bumping. For me this is in very handy, when implementing the multihead attention in vanilla transformer as matrices are 4D. Further in this page, lets us go through how to use einsum and few of its applications in linear algebra.</p>
+<p>As you see, it works without any need for dimensional bumping. For me this is very handy, when implementing the multihead attention in vanilla transformer as matrices are 4D. Further in this page, lets us go through how to use einsum and few of its applications in linear algebra.</p>
 </section>
 <section id="how-to-use-einsum" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use-einsum">How to use einsum?</h2>
@@ -358,7 +358,11 @@ tensor([[1, 0],
 <pre><code>torch.Size([16, 10, 512])</code></pre>
 </div>
 </div>
-<p>In general, one can find lot of implementations of multihead attention using <em>torch.bmm( )</em>. Objective here is to show that this can be easily performed using einsum. ### Exercise: Objective: Try to compute gaussian distribution (in both 1D and 2D) using einsum. In depth details of gaussian distribution can be found here in [3]. The below image depicts the guassian distribution formula taken from [3]. <img src="./multigauss.jpeg" title="Multivariate Gaussian Distribution" class="img-fluid" alt="Multivariate Gaussian Distribution"></p>
+<p>In general, one can find lot of implementations of multihead attention using <em>torch.bmm( )</em>. Objective here is to show that this can be easily performed using einsum.</p>
+<section id="exercise" class="level3">
+<h3 class="anchored" data-anchor-id="exercise">Exercise:</h3>
+<p>Objective: Try to compute gaussian distribution (in both 1D and 2D) using einsum. In depth details of gaussian distribution can be found here in [3]. The below image depicts the guassian distribution formula taken from [3]. <img src="./multigauss.jpeg" title="Multivariate Gaussian Distribution" class="img-fluid" alt="Multivariate Gaussian Distribution"></p>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References:</h2>

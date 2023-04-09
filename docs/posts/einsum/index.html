@@ -321,7 +321,7 @@ tensor([[1, 0],
 <h2 class="anchored" data-anchor-id="practical-usage">Practical usage:</h2>
 <p>Furthermore lets see how einsum is used in real world examples. Take Transformers for example first proposed in [2], they took the field of deep learning in a whole new direction (in my opinion). Curcial part of transformers is multihead attention block as depicted in below image. <img src="./multihead_attention.jpeg" title="Multi head attention. Image from [2]" class="img-fluid" alt="Multi head attention"></p>
 <p>The above image is taken from [2]. Let us implement this block using einsum.</p>
-<div class="cell" data-scrolled="true" data-execution_count="10">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># d_model = 512, d_k = 64, num_heads(h) = 8 as stated in paper [2].</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize Linear layers</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>w_q  <span class="op">=</span> torch.randn(<span class="dv">64</span>, <span class="dv">64</span>)</span>

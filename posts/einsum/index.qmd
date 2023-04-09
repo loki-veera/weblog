@@ -2,6 +2,7 @@
 title: Matrix Operations using EINSUM
 author: Lokesh Veeramachenei
 date: '2023-04-09'
+categories: [linear algebra, einsum]
 format:
   html:
     code-fold: false

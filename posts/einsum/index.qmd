@@ -59,6 +59,7 @@ print(f'matrix A transpose shape: {A_T.shape}')
 ```
 
 In the above transpose example, we see that the left side of the equation consists of original indices order $(i,j)$ and to the right side, we specify the order of indices we need $(j, i)$.
+
 ### Other matrix operations
 
 ```{python}

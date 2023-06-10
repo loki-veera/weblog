@@ -33,7 +33,9 @@ $$
 The conditional number of unitary matrices is 1. These matrices are important for orthogonalization of the neural networks. <br>
 Unitary matrcies: A matrix whose inverse equals to complex transpose.
 $$
-    U^* = U^{-1} \\
+    U^* = U^{-1}
+$$
+$$
     UU^* = I
 $$
 

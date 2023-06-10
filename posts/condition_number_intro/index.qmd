@@ -1,0 +1,148 @@
+---
+title: Condition Number Introduction
+author: Lokesh Veeramacheneni
+date: 'July 10, 2023'
+categories:
+  - linear algebra
+  - condition number
+format:
+  html:
+    code-fold: false
+execute:
+  enables: true
+jupyter: python3
+---
+
+### Keywords:
+condition number, matrix multiplications, linear algebra.
+
+```{python}
+import torch
+```
+
+In this post, we will look into what is a condition number and how to calculate it. Along with that we will see an example of how the condition number affects the system of linear equations.
+
+## What is condition number?
+
+Condition number $(\kappa)$ specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well conditioned and vice versa. The condition number of a matrix $M$ is computed by the ratio of largest to smalled singular value of the matrix $M$.
+
+$$
+    \kappa(M) = \frac{\sigma_{max}(M)}{\sigma_{min}(M)}
+$$
+
+The conditional number of unitary matrices is 1. These matrices are important for orthogonalization of the neural networks. <br>
+Unitary matrcies: A matrix whose inverse equals to complex transpose.
+$$
+    U^* = U^{-1} \\
+    UU^* = I
+$$
+
+```{python}
+def get_condition_number(matrix):
+    _, sigma, _ = torch.linalg.svd(matrix)
+    return max(sigma)/min(sigma)
+```
+
+## Ill conditioned system
+
+The example for ill conditioned matrix given in [1] is
+
+\begin{pmatrix}
+1 & 1 \\
+1 & 1.0001
+\end{pmatrix}
+
+Now lets see why this matrix is ill conditioned. <br>
+Let us consider a set of linear equations represented in the matrix form $Ax = b$ with A being the above matrix.
+
+Let's consider $b$ matrix as 
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+The system of equations is represented as 
+$$
+\left(\matrix{1 & 1 \cr 1 & 1.0001}\right)\left(\matrix{x \cr y}\right) = 
+\left(\matrix{1 \cr 1}\right)
+$$
+The solution to the system is 
+$\left(\matrix{x \cr y}\right) = \left(\matrix{1 \cr 0}\right)$
+
+```{python}
+M = torch.Tensor([[1, 1], [1, 1.0001]])
+b = torch.Tensor([[1], [1]])
+result = torch.linalg.inv(M)@b
+print(f"The solution to the system with above conditions is: \n {result}")
+```
+
+Let's say because of numerical error $b$ matrix is slightly changed as
+\begin{pmatrix}
+1 \\
+1.0002
+\end{pmatrix}
+
+Now the system of equations are:
+$$
+\left(\matrix{1 & 1 \cr 1 & 1.0001}\right)\left(\matrix{x \cr y}\right) = 
+\left(\matrix{1 \cr 1.0002}\right)
+$$
+The solution to the system is 
+$\left(\matrix{x \cr y}\right) = \left(\matrix{-1 \cr 2}\right)$
+
+```{python}
+x = torch.Tensor([[1], [1.0002]])
+result = torch.linalg.inv(M)@x
+print(f"The solution to the system with slight change in b is: \n {result}")
+```
+
+```{python}
+condition_number = get_condition_number(M)
+print(f"Condition number of the matrix M is {condition_number}")
+```
+
+As one can see that with the change in one of the element ($4^{th}$ decimal), changed the solution in units place. So that is why this matrix is ill conditioned with large condition number of 39949.363.
+
+## Well conditioned system
+Let's look at how well conditioned matrix behaves to small changes.<br>
+An example of such matrix is 
+\begin{pmatrix}
+3 & 2 \\
+1 & 4
+\end{pmatrix} with the condition number 2.62.
+
+```{python}
+M_well = torch.Tensor([[3, 2], [1, 4]])
+print(get_condition_number(M_well))
+```
+
+With $b$ matrix as 
+\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}
+The solution to the system is
+
+```{python}
+result =  torch.linalg.inv(M_well)@b
+print(result)
+```
+
+With $b$ matrix slightly changed as 
+\begin{pmatrix}
+1 \\
+1.0002
+\end{pmatrix}
+The solution to the system is
+
+```{python}
+result = torch.linalg.inv(M_well)@x
+print(result)
+```
+
+One can see that, with the change in $4^{th}$ decimal, the solution to the system is only changed in $3^{rd}$ decimal.
+
+In the next post, we will see why this is important in training neural networks and how condition number affects the training regime.
+
+## References:
+1. Strang, Gilbert. Linear algebra and its applications. Belmont, CA: Thomson, Brooks/Cole, 2006.
+

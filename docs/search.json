@@ -1,5 +1,40 @@
 [
   {
+    "objectID": "posts/condition_number_intro/index.html",
+    "href": "posts/condition_number_intro/index.html",
+    "title": "Condition Number Introduction",
+    "section": "",
+    "text": "condition number, matrix multiplications, linear algebra.\n\nimport torch\n\nIn this post, we will look into what is a condition number and how to calculate it. Along with that we will see an example of how the condition number affects the system of linear equations."
+  },
+  {
+    "objectID": "posts/condition_number_intro/index.html#what-is-condition-number",
+    "href": "posts/condition_number_intro/index.html#what-is-condition-number",
+    "title": "Condition Number Introduction",
+    "section": "What is condition number?",
+    "text": "What is condition number?\nCondition number \\((\\kappa)\\) specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well conditioned and vice versa. The condition number of a matrix \\(M\\) is computed by the ratio of largest to smalled singular value of the matrix \\(M\\).\n\\[\n    \\kappa(M) = \\frac{\\sigma_{max}(M)}{\\sigma_{min}(M)}\n\\]\nThe conditional number of unitary matrices is 1. These matrices are important for orthogonalization of the neural networks.  Unitary matrcies: A matrix whose inverse equals to complex transpose. \\[\n    U^* = U^{-1} \\\\\n    UU^* = I\n\\]\n\ndef get_condition_number(matrix):\n    _, sigma, _ = torch.linalg.svd(matrix)\n    return max(sigma)/min(sigma)"
+  },
+  {
+    "objectID": "posts/condition_number_intro/index.html#ill-conditioned-system",
+    "href": "posts/condition_number_intro/index.html#ill-conditioned-system",
+    "title": "Condition Number Introduction",
+    "section": "Ill conditioned system",
+    "text": "Ill conditioned system\nThe example for ill conditioned matrix given in [1] is\n\\[\\begin{pmatrix}\n1 & 1 \\\\\n1 & 1.0001\n\\end{pmatrix}\\]\nNow lets see why this matrix is ill conditioned.  Let us consider a set of linear equations represented in the matrix form \\(Ax = b\\) with A being the above matrix.\nLet’s consider \\(b\\) matrix as\n\\[\\begin{pmatrix}\n1 \\\\\n1\n\\end{pmatrix}\\]\nThe system of equations is represented as \\[\n\\left(\\matrix{1 & 1 \\cr 1 & 1.0001}\\right)\\left(\\matrix{x \\cr y}\\right) =\n\\left(\\matrix{1 \\cr 1}\\right)\n\\] The solution to the system is \\(\\left(\\matrix{x \\cr y}\\right) = \\left(\\matrix{1 \\cr 0}\\right)\\)\n\nM = torch.Tensor([[1, 1], [1, 1.0001]])\nb = torch.Tensor([[1], [1]])\nresult = torch.linalg.inv(M)@b\nprint(f\"The solution to the system with above conditions is: \\n {result}\")\n\nThe solution to the system with above conditions is: \n tensor([[1.],\n        [0.]])\n\n\nLet’s say because of numerical error \\(b\\) matrix is slightly changed as\n\\[\\begin{pmatrix}\n1 \\\\\n1.0002\n\\end{pmatrix}\\]\nNow the system of equations are: \\[\n\\left(\\matrix{1 & 1 \\cr 1 & 1.0001}\\right)\\left(\\matrix{x \\cr y}\\right) =\n\\left(\\matrix{1 \\cr 1.0002}\\right)\n\\] The solution to the system is \\(\\left(\\matrix{x \\cr y}\\right) = \\left(\\matrix{-1 \\cr 2}\\right)\\)\n\nx = torch.Tensor([[1], [1.0002]])\nresult = torch.linalg.inv(M)@x\nprint(f\"The solution to the system with slight change in b is: \\n {result}\")\n\nThe solution to the system with slight change in b is: \n tensor([[-1.],\n        [ 2.]])\n\n\n\ncondition_number = get_condition_number(M)\nprint(f\"Condition number of the matrix M is {condition_number}\")\n\nCondition number of the matrix M is 39949.36328125\n\n\nAs one can see that with the change in one of the element (\\(4^{th}\\) decimal), changed the solution in units place. So that is why this matrix is ill conditioned with large condition number of 39949.363."
+  },
+  {
+    "objectID": "posts/condition_number_intro/index.html#well-conditioned-system",
+    "href": "posts/condition_number_intro/index.html#well-conditioned-system",
+    "title": "Condition Number Introduction",
+    "section": "Well conditioned system",
+    "text": "Well conditioned system\nLet’s look at how well conditioned matrix behaves to small changes. An example of such matrix is\n\\[\\begin{pmatrix}\n3 & 2 \\\\\n1 & 4\n\\end{pmatrix}\\]\nwith the condition number 2.62.\n\nM_well = torch.Tensor([[3, 2], [1, 4]])\nprint(get_condition_number(M_well))\n\ntensor(2.6180)\n\n\nWith \\(b\\) matrix as\n\\[\\begin{pmatrix}\n1 \\\\\n1\n\\end{pmatrix}\\]\nThe solution to the system is\n\nresult =  torch.linalg.inv(M_well)@b\nprint(result)\n\ntensor([[0.2000],\n        [0.2000]])\n\n\nWith \\(b\\) matrix slightly changed as\n\\[\\begin{pmatrix}\n1 \\\\\n1.0002\n\\end{pmatrix}\\]\nThe solution to the system is\n\nresult = torch.linalg.inv(M_well)@x\nprint(result)\n\ntensor([[0.2000],\n        [0.2001]])\n\n\nOne can see that, with the change in \\(4^{th}\\) decimal, the solution to the system is only changed in \\(3^{rd}\\) decimal.\nIn the next post, we will see why this is important in training neural networks and how condition number affects the training regime."
+  },
+  {
+    "objectID": "posts/condition_number_intro/index.html#references",
+    "href": "posts/condition_number_intro/index.html#references",
+    "title": "Condition Number Introduction",
+    "section": "References:",
+    "text": "References:\n\nStrang, Gilbert. Linear algebra and its applications. Belmont, CA: Thomson, Brooks/Cole, 2006."
+  },
+  {
     "objectID": "posts/einsum/index.html",
     "href": "posts/einsum/index.html",
     "title": "Matrix Operations using EINSUM",
@@ -39,6 +74,6 @@
     "href": "index.html",
     "title": "weblog",
     "section": "",
-    "text": "Matrix Operations using EINSUM\n\n\n\n\n\n\n\nlinear algebra\n\n\neinsum\n\n\n\n\n\n\n\n\n\n\n\nApr 9, 2023\n\n\nLokesh Veeramachenei\n\n\n\n\n\n\nNo matching items"
+    "text": "Condition Number Introduction\n\n\n\n\n\n\n\nlinear algebra\n\n\ncondition number\n\n\n\n\n\n\n\n\n\n\n\nJul 10, 2023\n\n\nLokesh Veeramacheneni\n\n\n\n\n\n\n  \n\n\n\n\nMatrix Operations using EINSUM\n\n\n\n\n\n\n\nlinear algebra\n\n\neinsum\n\n\n\n\n\n\n\n\n\n\n\nApr 9, 2023\n\n\nLokesh Veeramachenei\n\n\n\n\n\n\nNo matching items"
   }
 ]

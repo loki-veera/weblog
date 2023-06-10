@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/condition_number_intro/index.html",
       "/posts/einsum/index.html"
     ]
   }

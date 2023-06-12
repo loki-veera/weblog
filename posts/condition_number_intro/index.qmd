@@ -20,18 +20,18 @@ condition number, matrix multiplications, linear algebra.
 import torch
 ```
 
-In this post, we will look into what is a condition number and how to calculate it. Along with that we will see an example of how the condition number affects the system of linear equations.
+In this post, we will look into what is a condition number and how to calculate it. Along with that, we will see an example of how the condition number affects the system of linear equations.
 
 ## What is condition number?
 
-Condition number $(\kappa)$ specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well conditioned and vice versa. The condition number of a matrix $M$ is computed by the ratio of largest to smalled singular value of the matrix $M$.
+Condition number $(\kappa)$ specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well-conditioned and vice versa. The condition number of a matrix $M$ is computed by the ratio of largest to smallest singular value of the matrix $M$.
 
 $$
     \kappa(M) = \frac{\sigma_{max}(M)}{\sigma_{min}(M)}
 $$
 
-The conditional number of unitary matrices is 1. These matrices are important for orthogonalization of the neural networks. <br>
-Unitary matrcies: A matrix whose inverse equals to complex transpose.
+The conditional number of unitary matrices is 1. These matrices are important for the orthogonalization of the neural networks. <br>
+Unitary matrices: A matrix whose inverse equals it's complex transpose.
 $$
     U^* = U^{-1}
 $$
@@ -47,14 +47,14 @@ def get_condition_number(matrix):
 
 ## Ill conditioned system
 
-The example for ill conditioned matrix given in [1] is
+The example of an ill-conditioned matrix given in [1] is
 
 \begin{pmatrix}
 1 & 1 \\
 1 & 1.0001
 \end{pmatrix}
 
-Now lets see why this matrix is ill conditioned. <br>
+Now let's see why this matrix is ill conditioned. <br>
 Let us consider a set of linear equations represented in the matrix form $Ax = b$ with A being the above matrix.
 
 Let's consider $b$ matrix as 
@@ -106,7 +106,7 @@ As one can see that with the change in one of the element ($4^{th}$ decimal), ch
 
 ## Well conditioned system
 Let's look at how well conditioned matrix behaves to small changes.<br>
-An example of such matrix is 
+An example of such a matrix is 
 \begin{pmatrix}
 3 & 2 \\
 1 & 4

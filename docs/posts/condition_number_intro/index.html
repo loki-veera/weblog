@@ -185,15 +185,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In this post, we will look into what is a condition number and how to calculate it. Along with that we will see an example of how the condition number affects the system of linear equations.</p>
+<p>In this post, we will look into what is a condition number and how to calculate it. Along with that, we will see an example of how the condition number affects the system of linear equations.</p>
 </section>
 <section id="what-is-condition-number" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-condition-number">What is condition number?</h2>
-<p>Condition number <span class="math inline">\((\kappa)\)</span> specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well conditioned and vice versa. The condition number of a matrix <span class="math inline">\(M\)</span> is computed by the ratio of largest to smalled singular value of the matrix <span class="math inline">\(M\)</span>.</p>
+<p>Condition number <span class="math inline">\((\kappa)\)</span> specifies the sensitivity of the matrix multiplication to small changes in the input. A matrix with a smaller condition number is said to be well-conditioned and vice versa. The condition number of a matrix <span class="math inline">\(M\)</span> is computed by the ratio of largest to smallest singular value of the matrix <span class="math inline">\(M\)</span>.</p>
 <p><span class="math display">\[
     \kappa(M) = \frac{\sigma_{max}(M)}{\sigma_{min}(M)}
 \]</span></p>
-<p>The conditional number of unitary matrices is 1. These matrices are important for orthogonalization of the neural networks. <br> Unitary matrcies: A matrix whose inverse equals to complex transpose. <span class="math display">\[
+<p>The conditional number of unitary matrices is 1. These matrices are important for the orthogonalization of the neural networks. <br> Unitary matrices: A matrix whose inverse equals it’s complex transpose. <span class="math display">\[
     U^* = U^{-1}
 \]</span> <span class="math display">\[
     UU^* = I
@@ -206,12 +206,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="ill-conditioned-system" class="level2">
 <h2 class="anchored" data-anchor-id="ill-conditioned-system">Ill conditioned system</h2>
-<p>The example for ill conditioned matrix given in [1] is</p>
+<p>The example of an ill-conditioned matrix given in [1] is</p>
 <span class="math display">\[\begin{pmatrix}
 1 &amp; 1 \\
 1 &amp; 1.0001
 \end{pmatrix}\]</span>
-<p>Now lets see why this matrix is ill conditioned. <br> Let us consider a set of linear equations represented in the matrix form <span class="math inline">\(Ax = b\)</span> with A being the above matrix.</p>
+<p>Now let’s see why this matrix is ill conditioned. <br> Let us consider a set of linear equations represented in the matrix form <span class="math inline">\(Ax = b\)</span> with A being the above matrix.</p>
 Let’s consider <span class="math inline">\(b\)</span> matrix as
 <span class="math display">\[\begin{pmatrix}
 1 \\
@@ -262,7 +262,7 @@ Let’s say because of numerical error <span class="math inline">\(b\)</span> ma
 </section>
 <section id="well-conditioned-system" class="level2">
 <h2 class="anchored" data-anchor-id="well-conditioned-system">Well conditioned system</h2>
-Let’s look at how well conditioned matrix behaves to small changes.<br> An example of such matrix is
+Let’s look at how well conditioned matrix behaves to small changes.<br> An example of such a matrix is
 <span class="math display">\[\begin{pmatrix}
 3 &amp; 2 \\
 1 &amp; 4
